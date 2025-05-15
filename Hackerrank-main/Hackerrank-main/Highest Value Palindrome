@@ -1,0 +1,66 @@
+import java.util.Scanner;
+
+public class Solution {
+    public static String highestValuePalindrome(String s, int n, int k) {
+        char[] arr = s.toCharArray();
+        boolean[] changed = new boolean[n];
+        
+        // Step 1: Make palindrome with minimal changes
+        int left = 0, right = n - 1;
+        while (left < right) {
+            if (arr[left] != arr[right]) {
+                char maxChar = (char) Math.max(arr[left], arr[right]);
+                arr[left] = maxChar;
+                arr[right] = maxChar;
+                changed[left] = changed[right] = true;
+                k--;
+            }
+            left++;
+            right--;
+        }
+        
+        if (k < 0) return "-1"; // Not possible
+        
+        // Step 2: Maximize palindrome
+        left = 0;
+        right = n - 1;
+        while (left <= right && k > 0) {
+            if (left == right) {
+                // Middle character in odd length palindrome
+                if (arr[left] != '9' && k > 0) {
+                    arr[left] = '9';
+                    k--;
+                }
+            } else {
+                if (arr[left] < '9') {
+                    // If either was changed before, upgrading to '9' costs 1 change
+                    if (changed[left] || changed[right]) {
+                        if (k >= 1) {
+                            arr[left] = arr[right] = '9';
+                            k--;
+                        }
+                    } else {
+                        // If neither changed before, costs 2 changes
+                        if (k >= 2) {
+                            arr[left] = arr[right] = '9';
+                            k -= 2;
+                        }
+                    }
+                }
+            }
+            left++;
+            right--;
+        }
+        
+        return new String(arr);
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+        String s = sc.next();
+        System.out.println(highestValuePalindrome(s, n, k));
+        sc.close();
+    }
+}

@@ -1,0 +1,46 @@
+import java.util.*;
+
+public class Solution {
+
+    public static int luckBalance(int k, List<List<Integer>> contests) {
+        List<Integer> important = new ArrayList<>();
+        int totalLuck = 0;
+
+        for (List<Integer> contest : contests) {
+            int luck = contest.get(0);
+            int isImportant = contest.get(1);
+
+            totalLuck += luck;
+            if (isImportant == 1) {
+                important.add(luck);
+            }
+        }
+
+        // Sort important contests in ascending order
+        Collections.sort(important);
+
+        // Must win the smallest k important contests
+        int mustWin = important.size() - k;
+        for (int i = 0; i < mustWin; i++) {
+            totalLuck -= 2 * important.get(i); // subtract twice (already added)
+        }
+
+        return totalLuck;
+    }
+
+    // HackerRank main method
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); // number of contests
+        int k = sc.nextInt(); // max important contests to lose
+
+        List<List<Integer>> contests = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int luck = sc.nextInt();
+            int important = sc.nextInt();
+            contests.add(Arrays.asList(luck, important));
+        }
+
+        System.out.println(luckBalance(k, contests));
+    }
+}
