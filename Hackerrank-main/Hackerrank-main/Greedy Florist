@@ -1,0 +1,34 @@
+import java.util.*;
+
+public class Solution {
+
+    public static int getMinimumCost(int k, List<Integer> c) {
+        // Sort in descending order (greedy: buy expensive flowers first)
+        Collections.sort(c, Collections.reverseOrder());
+
+        int totalCost = 0;
+        int purchaseRound = 0;
+
+        for (int i = 0; i < c.size(); i++) {
+            int friendIndex = i / k;
+            totalCost += (friendIndex + 1) * c.get(i);
+        }
+
+        return totalCost;
+    }
+
+    // HackerRank main method
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt(); // number of flowers
+        int k = sc.nextInt(); // number of friends
+
+        List<Integer> c = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            c.add(sc.nextInt());
+        }
+
+        int result = getMinimumCost(k, c);
+        System.out.println(result);
+    }
+}

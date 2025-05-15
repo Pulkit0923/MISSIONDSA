@@ -1,0 +1,60 @@
+import java.util.*;
+
+public class Solution {
+
+    static class Node {
+        String value;
+        int remainder;
+
+        Node(String value, int remainder) {
+            this.value = value;
+            this.remainder = remainder;
+        }
+    }
+
+    public static String findSpecialMultiple(int N) {
+        if (N == 0) return "0";
+
+        boolean[] visited = new boolean[N];
+        Queue<Node> queue = new LinkedList<>();
+
+        Node start = new Node("9", 9 % N);
+        queue.add(start);
+        visited[start.remainder] = true;
+
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+
+            if (current.remainder == 0) {
+                return current.value;
+            }
+
+            // Append '0'
+            int rem0 = (current.remainder * 10) % N;
+            if (!visited[rem0]) {
+                visited[rem0] = true;
+                queue.add(new Node(current.value + "0", rem0));
+            }
+
+            // Append '9'
+            int rem9 = (current.remainder * 10 + 9) % N;
+            if (!visited[rem9]) {
+                visited[rem9] = true;
+                queue.add(new Node(current.value + "9", rem9));
+            }
+        }
+
+        return "-1"; // Should never reach here for valid input
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+
+        while (T-- > 0) {
+            int N = sc.nextInt();
+            System.out.println(findSpecialMultiple(N));
+        }
+        sc.close();
+    }
+}

@@ -1,0 +1,33 @@
+import java.util.*;
+
+public class Solution {
+
+    public static List<Integer> stones(int n, int a, int b) {
+        Set<Integer> result = new TreeSet<>();
+
+        for (int i = 0; i < n; i++) {
+            int val = i * b + (n - 1 - i) * a;
+            result.add(val);
+        }
+
+        return new ArrayList<>(result);
+    }
+
+    // HackerRank main method
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+
+        for (int t = 0; t < T; t++) {
+            int n = sc.nextInt();
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+
+            List<Integer> res = stones(n, a, b);
+            for (int val : res) {
+                System.out.print(val + " ");
+            }
+            System.out.println();
+        }
+    }
+}
